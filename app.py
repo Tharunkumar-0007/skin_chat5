@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
+from tensorflow.python.client import device_lib
 import os
 import numpy as np
 import re
@@ -14,6 +15,10 @@ from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain_community.llms import CTransformers
 from langchain.chains import RetrievalQA
+import torch
+print(torch.cuda.is_available())
+
+ 
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -29,7 +34,7 @@ db = SQLAlchemy(app)
 UPLOAD_FOLDER = 'uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-model_path = 'D:/dummy/union/image_classifier_model.h5' #D:/dummy/union/image_classifier_model.h5
+model_path = 'D:/Demo/union/image_classifier_model.h5' #D:/Demo/union/image_classifier_model.h5
 model = load_model(model_path)
 # Define class labels for image classification
 class_labels = {
@@ -121,7 +126,18 @@ def retrieval_qa_chain(llm, prompt, db):
 def initialize_qa_bot():
     """Initialize the QA bot and store it in a global variable."""
     global qa_chain
-    device = 'cuda' if torch.cuda.is_available() else 'cpu'
+
+    # Determine the device: GPU > APU > CPU
+    if torch.cuda.is_available():
+        device = 'cuda'  # Use GPU if available
+        print("Using GPU for processing.")
+    elif hasattr(torch, 'has_mps') and torch.backends.mps.is_available():
+        device = 'mps'  # Use Apple Silicon APU if available
+        print("Using APU for processing.")
+    else:
+        device = 'cpu'  # Fall back to CPU
+        print("Using CPU for processing.")
+
     embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2", model_kwargs={'device': device})
 
     try:
@@ -137,7 +153,6 @@ def initialize_qa_bot():
         return None
 
     try:
-        
         print("Loading LLM...")
         llm = load_llm()
         print("LLM loaded successfully.")
@@ -155,11 +170,13 @@ def initialize_qa_bot():
         print(f"Error creating QA chain: {e}")
         return None
 
+
+
 @app.route('/')
 def index():
     return render_template('index.html')  # Ensure index.html exists in the 'templates' folder
 
-classifier = pipeline('zero-shot-classification', model='facebook/bart-large-mnli')
+classifier = pipeline('zero-shot-classification', model='facebook/bart-large-mnli',device=0)
 
 
 def is_medical_query(query):
