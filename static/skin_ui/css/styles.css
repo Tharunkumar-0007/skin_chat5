@@ -7,7 +7,7 @@ html, body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-attachment: fixed; /* Make the background static */
+    background-attachment: fixed;
     text-align: center;
     color: #fff;
     overflow-x: hidden;
@@ -24,9 +24,6 @@ html, body {
     display: flex;
     align-items: center;
     justify-content: center;
-    /* background-color: rgba(255, 255, 255, 0.9);  */
-    /* box-shadow: 0 4px 2px -2px gray; */
-    
 }
 
 .header h1 {
@@ -35,17 +32,14 @@ html, body {
     color: #043513;
 }
 
-.head{
-    top: 30px;
-}
 .container {
-    padding: 30px;
+    padding: 15px;
     border-radius: 10px;
     max-width: 400px;
-    margin: 5cm auto 0; /* Start content below the header */
-    background-color: #49988d54; 
+    margin: 5cm auto 0;
+    background-color: #49988d54;
     color: #fff;
-    height:800px;
+    height: 800px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
@@ -56,12 +50,12 @@ form {
 input[type="file"], #camera {
     border-radius: 5px;
     padding: 5px;
-    background-color: #2a694aab; /* Light background for inputs #2a694aab*/
+    background-color: #2a694aab;
 }
 
 button {
     padding: 8px 16px;
-    background-color: #8abc87cc; 
+    background-color: #8abc87cc;
     color: white;
     border: none;
     border-radius: 5px;
@@ -74,17 +68,17 @@ button:hover {
 }
 
 .error {
-    color: #FF4C4C; /* Red color for error messages */
+    color: #FF4C4C;
 }
 
 .result {
     line-height: 3;
-    color: #c24e31; /* Green color for result messages */
+    color: #c24e31;
 }
 
 video {
-    width: 600px;
-    height: auto;
+    width: 350px;
+    height: 350px;
     display: none;
     margin: 0 auto;
 }
@@ -110,9 +104,7 @@ canvas {
     right: 0;
     padding: 10px 0;
     text-align: center;
-    /* background-color: rgba(255, 255, 255, 0.9);  */
     z-index: 1000;
-    /* box-shadow: 0 -4px 2px -2px gray; */
 }
 
 .footer img {
@@ -124,19 +116,55 @@ canvas {
     font-size: 0.9em;
 }
 
-
-/* Media query for laptop view */
-@media only screen and (min-width: 1200px) and (max-width: 1600px) {
-    .container {
-        max-width: 800px;
-        margin: 160px auto;
+/* Responsive for tablets and below */
+@media only screen and (max-width: 768px) {
+    .header h1 {
+        font-size: 2rem;
     }
 
-    h1 {
-        font-size: 2.5rem;
+    .container {
+        max-width: 90%;
+        margin: 5cm auto;
+        padding: 15px;
     }
 
     video {
-        width: 720px;
+        max-width: 100%;
+    }
+}
+
+/* Responsive for smaller mobile devices */
+@media only screen and (max-width: 480px) {
+    .header h1 {
+        font-size: 1.5rem;
+    }
+
+    .container {
+        max-width:  300px;
+        margin: 8cm auto;
+        padding: 10px;
+    }
+
+    button {
+        padding: 6px 12px;
+    }
+}
+
+/* Fixed styling on desktop screens */
+@media only screen and (min-width: 769px) {
+    /* Set fixed widths and sizes to maintain desktop layout */
+    .header h1 {
+        font-size: 2.5rem;
+    }
+
+    .container {
+        max-width: 400px;
+        height: 300px;
+        position: relative;
+    }
+
+    video {
+        width: 350px;
+        height: 350px;
     }
 }
