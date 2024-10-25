@@ -203,15 +203,15 @@ input[type="text"] {
         align-items: center;
         justify-content: space-between;
         padding: 10px 20px;
-        background-color: #3566c040;
+        /* background-color: #3566c040; */
         color: white;
-        box-shadow: 0 4px 8px #5c83c0;
+        /* box-shadow: 0 4px 8px #5c83c0; */
         flex-wrap: wrap;
     }
     footer {
         text-align: center;
         padding: 15px;
-        background-color: #235bb3;
+        /* background-color: #235bb3; */
         color: white;
         font-size: 12px;
     }
